@@ -1,0 +1,4 @@
+2 Arrays: y = [y1,y2,...,yL] und c = [c1,c2,...,cL]
+
+Ideen: Merge Sort benutzen. eventuell vereinfachen
+
