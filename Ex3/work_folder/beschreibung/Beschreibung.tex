@@ -1,0 +1,212 @@
+% class
+\documentclass[ngerman]{scrartcl}
+
+
+% text input and font
+\usepackage[utf8]{inputenc}  % input in UTF-8
+\usepackage[T1]{fontenc}  % output in T1 fonts (west European encoding)
+\usepackage{lmodern}  % Latin modern font
+\usepackage{babel}  % language package
+\usepackage{amsmath, amssymb, amstext, mathtools}  % math packages (American Math Society) + correction of amsmath (mathtools) [loads amsmath automatically]
+\usepackage{physics}  % macros for easier typesetting of physical formulas
+\usepackage{letltxmacro}  % \let command for robust macros (new sqrt)
+
+
+% page geometry
+\usepackage{scrlayer-scrpage}  % page formatting with KOMA options
+\usepackage[paper=a4paper, hmargin=3cm, vmargin=2.5cm, includehead, includefoot]{geometry}
+
+
+% floats
+\usepackage[hypcap=false, labelfont=bf]{caption, subcaption}  % caption editing - hypcap warning with hyperref
+\usepackage{float}  % for [H] (forced here) specifier
+\usepackage{tabularray}
+\usepackage{diagbox}  % table cells with diagonal lines
+
+
+% graphical input
+\usepackage{graphicx}  % input JPEG, PNG, PDF, etc.
+\usepackage{pdfpages}  % input PDF as whole pages
+\usepackage{lastpage}  % reference to last page
+
+
+% text
+\usepackage[locale=DE, uncertainty-mode=separate]{siunitx}  % SI units, German formatting - \pm stays \pm instead of ..(.)
+\usepackage{icomma}  % no space after commas instead of English points) in decimal values
+\usepackage{enumitem}  % better enumerating with style options
+\usepackage{nicefrac}  % inline-fractions in n/d-style
+\usepackage{fancyvrb}  % Verbatim environment with better options (capital V!)
+
+% literacy
+\usepackage[style=apa]{biblatex}  % backend=Biber is standard
+\usepackage{csquotes}  % better quotation - should also be used in combination with package babel (warning)
+\usepackage{xurl}  % breaks links - after BibLaTeX, but before hyperref!
+\usepackage[hidelinks]{hyperref}  % produces most errors, last to load
+
+
+% KOMA setups
+% header and footer
+\pagestyle{scrheadings}  % KOMA style
+\clearpairofpagestyles  % reset
+\setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
+\setlength{\headheight}{27.2pt}  % just look at the warning
+\ihead{DA I\\Sortieralgorithmen}  % inner (left) head
+\chead{\textsc{Wachmann} Elias (12004232)}  % center head
+\ohead{03.11.2021}  % outer (right) head
+\cfoot{\pagemark{} / \pageref*{LastPage}}  % center foot - *: ref but no hyperlink
+% {}: empty statement
+% \ : protected space
+% \,: small space
+\DeclareTOCStyleEntry{dottedtocline}{section}  % sections in TableOfContents with dotted lines
+\KOMAoptions{parskip=half-}  % paragraphs with half a line height space instead of indentation, last line with no special treatment
+
+
+% package setups
+
+% BibLaTeX source
+\addbibresource{halbleiterdiode.bib}
+
+
+% rewrite names (babel overwrites German with standard English names, therefore at document beginn [after everything is loaded])
+\AtBeginDocument{\renewcommand{\refname}{Literaturverzeichnis}}
+% others:
+% \contentsname
+% \listtablename
+% \listfigurename
+
+
+% new sqrt
+% https://en.wikibooks.org/wiki/LaTeX/Mathematics
+\makeatletter
+\let\oldr@@t\r@@t
+\def\r@@t#1#2{%
+\setbox0=\hbox{$\oldr@@t#1{#2\,}$}\dimen0=\ht0
+\advance\dimen0-0.2\ht0
+\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+{\box0\lower0.4pt\box2}}
+\LetLtxMacro{\oldsqrt}{\sqrt}
+\renewcommand*{\sqrt}[2][\ ]{\oldsqrt[#1]{#2} }
+\makeatother
+
+ 
+% tabularray
+% imports_and_setups{
+%     expl3,
+%     xparse,
+%     ninecolors
+%     \hypersetup{pdfborder={0 0 0}}
+% }
+\input{../tabularray-environments.tex}
+
+\usepackage{pythonhighlight}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+% individual settings
+%\addbibresource{beschreibung.bib}  % database import with absolute path - file ending!
+\newcommand{\code}{\texttt}
+
+
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace{1cm}
+        \Huge
+        \textbf{Data Structures and Algorithms I}
+        \vspace{5mm}
+
+        \Large
+        Homework Assignment 3
+        \vspace{5mm}
+
+
+        \textbf{Wachmann Elias}
+
+
+        \today
+    \end{center}
+\end{titlepage}
+
+\clearpage
+\tableofcontents
+\newpage
+
+\section{Algotithmus in Worten \& Pseudo-Code}
+\label{sec:pseudo_code}
+Aufgabenstellung ist es, aus einer Liste mit beliebig vielen Produkt-Reviews eine abwärts-sortierte Liste mit der Häufigkeit von k-hintereinander-stehenden Worten \code{c} und eine zugehörige Liste dieser Worte \code{y} zu generieren. 
+
+\textbf{Der Algorithmus in Worten}
+
+Dem Algorithmus \code{count\_vectorizer} wird eine list of lists namens \code{texts} und die Anzahl der aufeinanderfolgenden Wörter \code{k} übergeben.
+Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende Wörter in einem String konkateniert und in ein Python \code{Dict} gespeichert, hierbei wird zuerst versucht den String als Key zu verwenden, um so den count um $1$ zu erhöhen. Schlägt dies fehl, so wird ein neuer Key mit count = $1$ angelegt. Nun werden die Keys und Values des Dictionaries in die beiden Listen \code{y} bzw. \code{c} entpackt. Nun wird \code{c} mittels \code{merge\_sort} absteigend sortiert, dabei wird die Liste der Worte \code{y} gleich sortiert, sodass weiterhin jede Stelle in \code{c} die Anzahl der dazugehörigen Phrase in \code{y} gibt.
+
+\textbf{Pseudo-Code}
+
+\begin{algorithm}
+\caption{\code{merge\_}}
+\begin{algorithmic}[1]
+    \Function{merge\_}{words, weights, start, k, end}
+    
+    \EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{\code{count\_vectorizer}}
+\begin{algorithmic}[1]
+    \Function{count\_vectorizer}{texts, k=1}
+    \State{// Input: \code{texts} array of arrays with each containing the words from a review}
+    \State{//        \code{k} integer with the count of consecutive words in a phrase (defaults to 1)}
+    \State{// Output: \code{y} array of unique phrases (with \code{k} consecutive words)} 
+    \State{// \code{c} array of occurrence count for corresponding index in \code{y}}
+    \State $\code{y} \gets \text{[ ]}$
+    \State $\code{c} \gets \text{[ ]}$
+    \State \code{vals} $\gets$ \{ \}
+    \State \code{entries} $\gets 0$
+    \Comment{empty Hashmap}
+    \For{\code{text} $\gets 0$ to $\text{length of } \code{texts}$}
+        \State{\code{counter} $\gets 0$}
+        \State{\code{len\_} $\gets \text{length of } \code{texts}$}
+        \While{\code{counter} $\leq$ (\code{len\_} - \code{k})}
+            % \State{\code{word} $\gets$ ""}
+            \For{\code{i} $\gets 0$ to \code{k}}
+                \State \code{word} $\gets$ \code{word} $+$ \code{texts[text][counter+i] $+$} `` ''
+            \EndFor
+            \State \code{word} $\gets$ strip right space from \code{word}
+            \State{\textbf{try:}}
+                \State{\hspace{6mm}\code{vals[word]} $\gets$ \code{vals[word]} $+ 1$}
+            \State{\textbf{catch KeyNotFoundError:}}
+                \Comment{Create new Key in Hashmap}
+                \State{\hspace{6mm}\code{vals[word]} $\gets 1$}
+            \State{\code{counter} $\gets$ \code{counter} $+1$}
+        \EndWhile
+        \State{\code{entries} $\gets$ \code{entries} $+$ \code{counter}}
+    \EndFor
+    \State{\code{y} $\gets$ convert keys of \code{vals} to list}
+    \State{\code{c} $\gets$ convert values of \code{vals} to list}
+    \State{\code{arrlen\_} $\gets$ length of \code{y}}
+    \If{\code{arrlen\_} = \code{entries}}
+        \State{\textbf{return} \code{y,c}}
+    \EndIf
+    \State{\code{return\_vals} $\gets$ \code{MERGE\_SORT}(\code{y},\code{c},\code{0},\code{arrlen\_}$-1$})
+    \State{\textbf{return} \code{return\_vals[0], return\_vals[1]}}
+    \Comment{return\_vals is a (y,c) tuple}
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+
+
+\clearpage
+% Literaturverzeichnis
+\printbibliography
+
+% Abbildungsverzeichnis
+\listoffigures
+
+% Tabellenverzeichnis
+\listoftables
+
+\end{document}

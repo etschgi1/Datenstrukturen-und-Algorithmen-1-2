@@ -85,10 +85,6 @@ def count_vectorizer(texts, k=1):
     y = []
     c = []
     # TODO begin
-    # #!Only debugging
-    # // def CompareString(s1, s2):
-    # //    return True if s1 == s2 else False
-    # //# k = 3  # !Only for debug
     entries = 0
     vals = {}
     for text in texts:
@@ -115,32 +111,32 @@ def count_vectorizer(texts, k=1):
     if arrlen_ == entries:  # info already sorted fast return
         return y, c
 
-    def merge_sort(words, counts, start, end):
+    def merge_sort(words, weights, start, end):
         if start < end:
-            k = int((start+end)/2)
-            merge_sort(words, counts, start, k)
-            merge_sort(words, counts, k+1, end)
-            return merge_(words, counts, start, k, end)
+            mid = int((start+end)/2)
+            merge_sort(words, weights, start, mid)
+            merge_sort(words, weights, mid+1, end)
+            return merge_(words, weights, start, mid, end)
         else:
-            return words, counts
+            return words, weights
 
-    def merge_(words, counts, start, k, end):
+    def merge_(words, weights, start, mid, end):
         left_arr, right_arr = [], []
-        for left in range(start, k+1):  # range-stop is exclusive in python
-            left_arr.append((words[left], counts[left]))  # append ist O(1)
-        for right in range(k+1, end+1):
-            right_arr.append((words[right], counts[right]))
-        left_arr.append(("", -np.inf))  # -inf so first who gets to -inf will
-        right_arr.append(("", -np.inf))  # always loose comparison
+        for left in range(start, mid+1):  # range-stop is exclusive in python
+            left_arr.append((words[left], weights[left]))  # append ist O(1)
+        for right in range(mid+1, end+1):
+            right_arr.append((words[right], weights[right]))
+        left_arr.append(("", 0))  # 0 is per design not possible either a word
+        right_arr.append(("", 0))  # is in the list (count = 1) or not
         left, right = 0, 0
         for counter in range(start, end+1):
             if left_arr[left][1] >= right_arr[right][1]:  # order
-                words[counter], counts[counter] = left_arr[left][0], left_arr[left][1]
+                words[counter], weights[counter] = left_arr[left][0], left_arr[left][1]
                 left += 1
             else:
-                words[counter], counts[counter] = right_arr[right][0], right_arr[right][1]
+                words[counter], weights[counter] = right_arr[right][0], right_arr[right][1]
                 right += 1
-        return words, counts
+        return words, weights
     y, c = merge_sort(y, c, 0, arrlen_-1)  # call functions
     # TODO end
     return y, c
@@ -227,7 +223,8 @@ def main():
     """Main function for exercise 3."""
     ngram_range = [1, 1]  # Range of ks. Can be [1,2], [1,3], [2, 4] etc.
     num_examples = 500  # There are 10000 reviews in the dataset.
-    test_algorithm = True  # If you want to test the classification algorithm set to False.
+    # If you want to test the classification algorithm set to False.
+    test_algorithm = True
     np.random.seed(0xDEADBEEF)
 
     if test_algorithm:
