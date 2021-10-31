@@ -1,9 +1,9 @@
-[0] Config.pm:311> INFO - This is Biber 2.16
-[1] Config.pm:314> INFO - Logfile is 'Beschreibung.blg'
-[312] biber-MSWIN32:340> INFO - === 
-[393] Biber.pm:415> INFO - Reading 'Beschreibung.bcf'
-[696] Biber.pm:952> INFO - Found 0 citekeys in bib section 0
-[728] Utils.pm:395> WARN - The file 'Beschreibung.bcf' does not contain any citations!
-[787] bbl.pm:654> INFO - Writing 'Beschreibung.bbl' with encoding 'UTF-8'
-[788] bbl.pm:757> INFO - Output to Beschreibung.bbl
-[789] Biber.pm:128> INFO - WARNINGS: 1
+[1] Config.pm:311> INFO - This is Biber 2.16
+[2] Config.pm:314> INFO - Logfile is 'Beschreibung.blg'
+[473] biber-MSWIN32:340> INFO - === 
+[627] Biber.pm:415> INFO - Reading 'Beschreibung.bcf'
+[1335] Biber.pm:952> INFO - Found 0 citekeys in bib section 0
+[1364] Utils.pm:395> WARN - The file 'Beschreibung.bcf' does not contain any citations!
+[1416] bbl.pm:654> INFO - Writing 'Beschreibung.bbl' with encoding 'UTF-8'
+[1417] bbl.pm:757> INFO - Output to Beschreibung.bbl
+[1418] Biber.pm:128> INFO - WARNINGS: 1

@@ -144,16 +144,66 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
 
 \textbf{Pseudo-Code}
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{\code{merge\_}}
 \begin{algorithmic}[1]
-    \Function{merge\_}{words, weights, start, k, end}
-    
+    \Function{merge\_}{words, weights, start, mid, end}
+    \State{// Input: \code{words} array of phrases with \code{k} consecutive words}
+    \State{//        \code{weights} for merging (corresponding count of phrases, merging in desc. order)}
+    \State{//        \code{start} start index for merge}
+    \State{//        \code{mid} mid index for merge}
+    \State{//        \code{end} end index for merge}
+    \State{// Output: \code{words} array of unique phrases (locally sorted between start and end)}
+    \State{//         \code{weights} array of corresponding counts of phrases in \code{words})}
+    \For{\code{left} $\gets$ \code{start} to \code{mid}}
+        \State{\code{left\_arr[left - start]} $\gets$ (\code{words[left]}, \code{weights[left]})}
+    \EndFor
+    \For{\code{right} $\gets$ \code{mid + 1} to \code{end}}
+        \State{\code{right\_arr[right - mid]} $\gets$ (\code{words[right]}, \code{weights[right]})} 
+    \EndFor
+    \State{\code{left\_arr[mid + 1]} $\gets$ (`` '', 0)}
+    \State{\code{right\_arr[end + 1]} $\gets$ (`` '', 0)}
+    \State{\code{left} $\gets 0$; \code{right} $\gets 0$}
+    \For{\code{counter} $\gets$ \code{start} to \code{end}}
+        \If{\code{left\_arr[left][1]} $\geq$ \code{right\_arr[right][1]}}
+            \State{\code{words[counter]} $\gets$ \code{left\_arr[left][0]}}
+            \State{\code{weights[counter]} $\gets$ \code{left\_arr[left][1]}}
+            \State{\code{left} $\gets$ \code{left} + 1}
+        \Else
+            \State{\code{words[counter]} $\gets$ \code{right\_arr[right][0]}}
+            \State{\code{weights[counter]} $\gets$ \code{right\_arr[right][1]}}
+            \State{\code{right} $\gets$ \code{right} + 1}
+        \EndIf
+    \EndFor
+    \State{\textbf{return} \code{(words, weights)}}
     \EndFunction
 \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{algorithm}[H]
+\caption{\code{merge\_sort}}
+\begin{algorithmic}[1]
+    \Function{merge\_sort}{words, weights, start, end}
+    \State{// Input: \code{words} array of phrases with \code{k} consecutive words}
+    \State{//        \code{weights} for sort (corresponding count of phrases, sorting in desc. order)}
+    \State{//        \code{start} start index for merge\_sort}
+    \State{//        \code{end} end index for merge\_sort}
+    \State{// Output: \code{words} array of unique phrases sorted in desc. order}
+    \State{//         \code{weights} array of corresponding counts of phrases in \code{words})}
+        \If{\code{start} < \code{end}}
+            \State{\code{mid} $\gets$ round down \code{(start + end)/2}}
+            \State{\code{MERGE\_SORT(words,weights,start,mid)}}
+            \State{\code{MERGE\_SORT(words,weights,mid + 1,end)}}
+            \State{\textbf{return} \code{(words, weights)}}
+        \Else
+            \State{\textbf{return} \code{MERGE\_(words,weights,start,mid,end)}}
+        \EndIf
+    \EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
 \caption{\code{count\_vectorizer}}
 \begin{algorithmic}[1]
     \Function{count\_vectorizer}{texts, k=1}
@@ -184,6 +234,12 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
         \EndWhile
         \State{\code{entries} $\gets$ \code{entries} $+$ \code{counter}}
     \EndFor
+\algstore{countvectorizer}
+\end{algorithmic}
+\end{algorithm} %for page break
+\begin{algorithm}[H]
+\begin{algorithmic}[1]
+\algrestore{countvectorizer}
     \State{\code{y} $\gets$ convert keys of \code{vals} to list}
     \State{\code{c} $\gets$ convert values of \code{vals} to list}
     \State{\code{arrlen\_} $\gets$ length of \code{y}}
@@ -197,6 +253,11 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
     \end{algorithmic}
 \end{algorithm}
 
+\section{Runtime-Analysis}
+\label{sec:runtime}
+Runtime is $\mathcal{O}(n\log(n))$
+\section{Correctness}
+\label{sec:correctness}
 
 
 \clearpage
