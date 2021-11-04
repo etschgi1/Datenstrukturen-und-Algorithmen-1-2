@@ -216,8 +216,7 @@ def main():
     """Main function for exercise 3."""
     ngram_range = [1, 1]  # Range of ks. Can be [1,2], [1,3], [2, 4] etc.
     num_examples = 500  # There are 10000 reviews in the dataset.
-    # If you want to test the classification algorithm set to False.
-    test_algorithm = True
+    test_algorithm = True  # If you want to test the classification algorithm set to False.
     np.random.seed(0xDEADBEEF)
 
     if test_algorithm:
