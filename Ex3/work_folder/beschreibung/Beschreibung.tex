@@ -135,12 +135,12 @@
 
 \section{Algotithmus in Worten \& Pseudo-Code}
 \label{sec:pseudo_code}
-Aufgabenstellung ist es, aus einer Liste mit beliebig vielen Produkt-Reviews eine abwärts-sortierte Liste mit der Häufigkeit von k-hintereinander-stehenden Worten \code{c} und eine zugehörige Liste dieser Worte \code{y} zu generieren. 
+Aufgabenstellung ist es, aus einer Liste mit beliebig vielen Produkt-Reviews eine abwärts-sortierte Liste mit der Häufigkeit von k-hintereinander-stehenden Worten \code{c} und eine zugehörige Liste dieser Worte/Phrasen \code{y} zu generieren. 
 
 \textbf{Der Algorithmus in Worten}
 
 Dem Algorithmus \code{count\_vectorizer} wird eine list of lists namens \code{texts} und die Anzahl der aufeinanderfolgenden Wörter \code{k} übergeben.
-Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende Wörter in einem String konkateniert und in ein Python \code{Dict} gespeichert, hierbei wird zuerst versucht den String als Key zu verwenden, um so den count um $1$ zu erhöhen. Schlägt dies fehl, so wird ein neuer Key mit count = $1$ angelegt. Nun werden die Keys und Values des Dictionaries in die beiden Listen \code{y} bzw. \code{c} entpackt. Nun wird \code{c} mittels \code{merge\_sort} absteigend sortiert, dabei wird die Liste der Worte \code{y} gleich sortiert, sodass weiterhin jede Stelle in \code{c} die Anzahl der dazugehörigen Phrase in \code{y} gibt.
+Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende Wörter in einem String konkateniert und in ein Python \code{Dict} gespeichert, hierbei wird zuerst versucht den String als key zu verwenden, um so den count um $1$ zu erhöhen. Schlägt dies fehl, so wird ein neuer key mit count = $1$ angelegt. Nun werden die Keys und values des Dictionaries in die beiden Listen \code{y} bzw. \code{c} entpackt. Nun wird \code{c} mittels \code{merge\_sort} absteigend sortiert, dabei wird die Liste der Worte \code{y} gleich sortiert, sodass weiterhin jede Stelle in \code{c} die Anzahl der dazugehörigen Phrase in \code{y} gibt.
 
 \textbf{Pseudo-Code}
 
@@ -236,7 +236,7 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
             \State{\textbf{try:}}
                 \State{\hspace{6mm}\code{vals[word]} $\gets$ \code{vals[word]} $+ 1$}
             \State{\textbf{catch KeyNotFoundError:}}
-                \Comment{Create new Key in Hashmap}
+                \Comment{Create new key in Hashmap}
                 \State{\hspace{6mm}\code{vals[word]} $\gets 1$}
             \State{\code{counter} $\gets$ \code{counter} $+1$}
         \EndWhile
@@ -266,21 +266,23 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
 Aus der Vorlesung ist bereits bekannt, dass \emph{Mergesort} eine asymptotische Laufzeit von $T(n) = \mathcal{O}(n\log(n))$ und einen Speicherverbrauch von $S(n) = \mathcal{O}(n)$ aufweist. 
 \code{merge\_sort} und \code{merge\_} sortieren dabei die beiden Listen \code{words} und \code{weights} was zu mehreren Zuweisungen und zum Doppeltem Speicherverbrauch - im Vergleich zum \emph{Mergesort} mit einer Liste - führt. Da jedoch Konstanten nichts an der Ordnung der Laufzeit und des Speicherverbrauchs ändern bleibt dieser ordnungsmäßig gleich. 
 
-Die gesamte Laufzeit und der Speicherverbrauch von \code{count\_vectorizer} ergibt sich somit wie folgt: Speicher und Laufzeit bis Zeile 9 ist $\mathcal{O}(1)$, da es sich nur um Initialisierung von Variablen handelt. Die folgende For-Schleife iteriert über die Listen mit den Wörtern aus den einzelnen Reviews und hat damit $T(m) = \mathcal{O}(m)$ wobei $m$ die Anzahl an Reviews angibt. Nun werden $len\_ - k$ ($len\_$ ... Wörter in der Review, $k$ Anzahl der aufeinanderfolgenden Wörter pro Phrase) Phrasen erstellt und in ein Dictionary gespeichert. $len\_-k$ wird im folgendem als $l$ bezeichnet und beschreibt die Länge der zu sortierenden Listen.
-Diese While-Schleife braucht somit $\mathcal{O}(l)$ * $\mathcal{O}(n)$ (vom konkatenieren der Wörter $n$ ist Länge der ausgegebenen Phrase) Zeit und $\mathcal{O}(l)$ Speicher im Dictionary. 
+Die gesamte Laufzeit von \code{count\_vectorizer} ergibt sich somit wie folgt: Laufzeit bis Zeile 9 ist $\mathcal{O}(1)$, da es sich nur um Initialisierung von Variablen handelt. Die folgende For-Schleife iteriert über die Listen mit den Wörtern aus den einzelnen Reviews und hat damit $T(m) = \mathcal{O}(m)$ wobei $m$ die Anzahl an Reviews angibt. Nun werden $len\_ - k$ ($len\_$ ... Wörter in der Review, $k$ Anzahl der aufeinanderfolgenden Wörter pro Phrase) Phrasen erstellt und in ein Dictionary gespeichert. $len\_-k$ wird im folgendem als $l$ bezeichnet und beschreibt die Länge der zu sortierenden Listen.
+Diese While-Schleife braucht somit $\mathcal{O}(l)$ * $\mathcal{O}(n)$ (vom konkatenieren der Wörter $n$ ist Länge der ausgegebenen Phrase) Zeit. 
 Nach der For-Schleife werden die keys und values aus dem Dictionary in die Listen \code{y} und \code{c} gespeichert, dies benötigt lineare Zeit. Die weiteren Zeilen benötigen konstante Zeit - außer der \emph{Mergesort} welcher $T(n) = \mathcal{O}(n\log(n))$ benötigt - und fallen somit nicht weiter ins Gewicht. 
 
 Somit ergibt sich die gesamte Zeitkomplexität zu: $T(l,m,n) = \mathcal{O}(m) * (\mathcal{O}(l) * \mathcal{O}(n)) + \mathcal{O}(l\log(l))$
 Diese ergibt sich weiter zu $T(l) = \mathcal{O}(l) + \mathcal{O}(l\log(l)) = \mathcal{O}(l\log(l))$, da für jeden gegebenen Aufruf, $m$, eine Konstanten - je nach Anzahl der Reviews - und $n$ ebenfalls konstant, indem man die durchschnittliche Länge der Phrasen für $n$ verwendet, ist.
 
 
-Der Speicherverbrauch ist durch $S(l) =\mathcal{O}(l)$ gegeben.
-
 
 
 \section{Korrektheit des Algorithmus}
 \label{sec:correctness}
-Der Algorithmus durchläuft am Anfang alle Reviews und speichert sie in ein Dictionary, dies garantiert bereits, dass sich keine Duplikate unter den Phrasen von k-aufeinanderfolgenden Worten finden. Weiter kann man dadurch auch gleich die Auftrittshäufigkeit jeder Phrase in den Reviews bestimmen. Das Dictionary enthält somit alle einzigartigen Phrasen mit ihrer Häufigkeit und es werden daraus die beiden noch unsortierten Listen \code{y} und \code{c} generiert. Kommt jede Phrase genau einmal vor, so muss die Liste zwangsläufig sortiert sein (alle Listeneinträge in \code{c} sind schließlich 1) und der Algorithmus bricht vor dem sortieren ab. Sind die Listen nicht schon zufälligerweise sortiert, so werden diese mit \code{merge\_sort} sortiert. Hier ruft sich \code{merge\_sort} rekursiv auf und teilt die Liste dabei in eine linke und rechte Subliste bis schließlich einzelne Elemente erreicht werden, welche zurückgegeben werden. \code{merge\_} garantiert nun die richtige Sortierung dieser. Die linke und rechte Liste werden dabei verglichen, wobei das Element mit dem größeren weight immer zuerst gestellt wird. Das einfügen eines Tupels mit einer leeren Phrase und einem weight von 0 garantiert, dass nachdem eine der beiden Listen durchlaufen ist, immer ein Element aus der noch nicht vollständig durchlaufenen Liste zur Ausgabe hinzugefügt wird. Für den Fall, dass die Elemente in der linken und rechten Liste gleiches weight besitzten wird das linke bevorzugt, wodurch die ursprüngliche Reihenfolge inerhalb der Reviews (für gleichen count/weight) erhalten bleiben. 
+Der Algorithmus durchläuft am Anfang alle Reviews und speichert sie in ein Dictionary, dies garantiert bereits, dass sich keine Duplikate unter den Phrasen von k-aufeinanderfolgenden Worten finden. Weiter kann man dadurch auch gleich die Auftrittshäufigkeit jeder Phrase in den Reviews bestimmen. Das Dictionary enthält somit alle einzigartigen Phrasen mit ihrer Häufigkeit und es werden daraus die beiden noch unsortierten Listen \code{y} und \code{c} generiert. Kommt jede Phrase genau einmal vor, so muss die Liste zwangsläufig sortiert sein (alle Listeneinträge in \code{c} sind schließlich 1) und der Algorithmus bricht vor dem sortieren ab. Sind die Listen nicht schon zufälligerweise sortiert, so werden diese mit \code{merge\_sort} sortiert. Hier ruft sich \code{merge\_sort} rekursiv auf und teilt die Liste dabei in eine linke und rechte Subliste bis schließlich einzelne Elemente erreicht werden, welche zurückgegeben werden. \code{merge\_} garantiert nun die richtige Sortierung dieser. Die linke und rechte Liste werden dabei verglichen, wobei das Element mit dem größeren weight immer zuerst gestellt wird. Das einfügen eines Tupels mit einer leeren Phrase und einem weight von 0 garantiert, dass nachdem eine der beiden Listen durchlaufen ist, immer ein Element aus der noch nicht vollständig durchlaufenen Liste zur Ausgabe hinzugefügt wird. Für den Fall, dass die Elemente in der linken und rechten Liste gleiches weight besitzen wird das linke bevorzugt, wodurch die ursprüngliche Reihenfolge innerhalb der Reviews (für gleichen count/weight) erhalten bleiben. 
+
+Der Algorithmus beendet richtig, falls \code{merge\_sort} mit zwei gleich langen Listen aufgerufen wird. Dies ist in  \code{count\_vectorizer} klarerweise der Fall, da die Listen aus dem Dictionary erstellt werden und jeder key genau ein value besitzt. Zudem wird \code{merge\_sort} immer mit Startindex $0$ und Endindex \code{arrlen\_-1} aufgerufen, wodurch in \code{merge\_} nie auf einen Index außerhalb der Listen zugegriffen wird. Dadurch ist garantiert, dass der Algorithmus ohne Fehler beendet. Durch die im obigen Absatz beschriebene Vorgehensweise (in \code{merge\_}), wird ebenso garantiert, dass die Sortierreihenfolge korrekt ist.  
+
+
 
 
 \clearpage
