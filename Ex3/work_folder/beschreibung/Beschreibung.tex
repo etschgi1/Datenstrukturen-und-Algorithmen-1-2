@@ -52,7 +52,7 @@
 \setlength{\headheight}{27.2pt}  % just look at the warning
 \ihead{DA I\\Sortieralgorithmen}  % inner (left) head
 \chead{\textsc{Wachmann} Elias (12004232)}  % center head
-\ohead{03.11.2021}  % outer (right) head
+\ohead{\today}  % outer (right) head
 \cfoot{\pagemark{} / \pageref*{LastPage}}  % center foot - *: ref but no hyperlink
 % {}: empty statement
 % \ : protected space
@@ -145,6 +145,7 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
 \textbf{Pseudo-Code}
 
 \begin{algorithm}[H]
+\label{alg:merge}
 \caption{\code{merge\_}}
 \begin{algorithmic}[1]
     \Function{merge\_}{words, weights, start, mid, end}
@@ -181,6 +182,7 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
 \end{algorithm}
 
 \begin{algorithm}[H]
+\label{alg:merge_sort}
 \caption{\code{merge\_sort}}
 \begin{algorithmic}[1]
     \Function{merge\_sort}{words, weights, start, end}
@@ -194,9 +196,9 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
             \State{\code{mid} $\gets$ round down \code{(start + end)/2}}
             \State{\code{MERGE\_SORT(words,weights,start,mid)}}
             \State{\code{MERGE\_SORT(words,weights,mid + 1,end)}}
-            \State{\textbf{return} \code{(words, weights)}}
-        \Else
             \State{\textbf{return} \code{MERGE\_(words,weights,start,mid,end)}}
+        \Else
+            \State{\textbf{return} \code{(words, weights)}}
         \EndIf
     \EndFunction
 \end{algorithmic}
@@ -204,6 +206,7 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
 
 
 \begin{algorithm}[H]
+\label{alg:vectorizer}
 \caption{\code{count\_vectorizer}}
 \begin{algorithmic}[1]
     \Function{count\_vectorizer}{texts, k=1}
@@ -214,17 +217,22 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
     \State $\code{y} \gets \text{[ ]}$
     \State $\code{c} \gets \text{[ ]}$
     \State \code{vals} $\gets$ \{ \}
-    \State \code{entries} $\gets 0$
     \Comment{empty Hashmap}
+    \State \code{entries} $\gets 0$
     \For{\code{text} $\gets 0$ to $\text{length of } \code{texts}$}
         \State{\code{counter} $\gets 0$}
         \State{\code{len\_} $\gets \text{length of } \code{texts}$}
         \While{\code{counter} $\leq$ (\code{len\_} - \code{k})}
             % \State{\code{word} $\gets$ ""}
-            \For{\code{i} $\gets 0$ to \code{k}}
-                \State \code{word} $\gets$ \code{word} $+$ \code{texts[text][counter+i] $+$} `` ''
-            \EndFor
-            \State \code{word} $\gets$ strip right space from \code{word}
+            \If{k != 1}
+                \State \code{word} $\gets$ concatenate \code{texts[text]} from counter to counter+1 separate with spaces
+            \Else
+                \State \code{word} $\gets$ \code{texts[text][counter]}
+            \EndIf
+            % \For{\code{i} $\gets 0$ to \code{k}}
+            %     \State \code{word} $\gets$ \code{word} $+$ \code{texts[text][counter+i] $+$} `` ''
+            % \EndFor
+            % \State \code{word} $\gets$ strip right space from \code{word}
             \State{\textbf{try:}}
                 \State{\hspace{6mm}\code{vals[word]} $\gets$ \code{vals[word]} $+ 1$}
             \State{\textbf{catch KeyNotFoundError:}}
@@ -253,21 +261,36 @@ Zuerst werden für jede Review in \code{texts} immer k-hintereinander-stehende W
     \end{algorithmic}
 \end{algorithm}
 
-\section{Runtime-Analysis}
+\section{Laufzeitanalyse}
 \label{sec:runtime}
-Runtime is $\mathcal{O}(n\log(n))$
-\section{Correctness}
+Aus der Vorlesung ist bereits bekannt, dass \emph{Mergesort} eine asymptotische Laufzeit von $T(n) = \mathcal{O}(n\log(n))$ und einen Speicherverbrauch von $S(n) = \mathcal{O}(n)$ aufweist. 
+\code{merge\_sort} und \code{merge\_} sortieren dabei die beiden Listen \code{words} und \code{weights} was zu mehreren Zuweisungen und zum Doppeltem Speicherverbrauch - im Vergleich zum \emph{Mergesort} mit einer Liste - führt. Da jedoch Konstanten nichts an der Ordnung der Laufzeit und des Speicherverbrauchs ändern bleibt dieser ordnungsmäßig gleich. 
+
+Die gesamte Laufzeit und der Speicherverbrauch von \code{count\_vectorizer} ergibt sich somit wie folgt: Speicher und Laufzeit bis Zeile 9 ist $\mathcal{O}(1)$, da es sich nur um Initialisierung von Variablen handelt. Die folgende For-Schleife iteriert über die Listen mit den Wörtern aus den einzelnen Reviews und hat damit $T(m) = \mathcal{O}(m)$ wobei $m$ die Anzahl an Reviews angibt. Nun werden $len\_ - k$ ($len\_$ ... Wörter in der Review, $k$ Anzahl der aufeinanderfolgenden Wörter pro Phrase) Phrasen erstellt und in ein Dictionary gespeichert. $len\_-k$ wird im folgendem als $l$ bezeichnet und beschreibt die Länge der zu sortierenden Listen.
+Diese While-Schleife braucht somit $\mathcal{O}(l)$ * $\mathcal{O}(n)$ (vom konkatenieren der Wörter $n$ ist Länge der ausgegebenen Phrase) Zeit und $\mathcal{O}(l)$ Speicher im Dictionary. 
+Nach der For-Schleife werden die keys und values aus dem Dictionary in die Listen \code{y} und \code{c} gespeichert, dies benötigt lineare Zeit. Die weiteren Zeilen benötigen konstante Zeit - außer der \emph{Mergesort} welcher $T(n) = \mathcal{O}(n\log(n))$ benötigt - und fallen somit nicht weiter ins Gewicht. 
+
+Somit ergibt sich die gesamte Zeitkomplexität zu: $T(l,m,n) = \mathcal{O}(m) * (\mathcal{O}(l) * \mathcal{O}(n)) + \mathcal{O}(l\log(l))$
+Diese ergibt sich weiter zu $T(l) = \mathcal{O}(l) + \mathcal{O}(l\log(l)) = \mathcal{O}(l\log(l))$, da für jeden gegebenen Aufruf, $m$, eine Konstanten - je nach Anzahl der Reviews - und $n$ ebenfalls konstant, indem man die durchschnittliche Länge der Phrasen für $n$ verwendet, ist.
+
+
+Der Speicherverbrauch ist durch $S(l) =\mathcal{O}(l)$ gegeben.
+
+
+
+\section{Korrektheit des Algorithmus}
 \label{sec:correctness}
+Der Algorithmus durchläuft am Anfang alle Reviews und speichert sie in ein Dictionary, dies garantiert bereits, dass sich keine Duplikate unter den Phrasen von k-aufeinanderfolgenden Worten finden. Weiter kann man dadurch auch gleich die Auftrittshäufigkeit jeder Phrase in den Reviews bestimmen. Das Dictionary enthält somit alle einzigartigen Phrasen mit ihrer Häufigkeit und es werden daraus die beiden noch unsortierten Listen \code{y} und \code{c} generiert. Kommt jede Phrase genau einmal vor, so muss die Liste zwangsläufig sortiert sein (alle Listeneinträge in \code{c} sind schließlich 1) und der Algorithmus bricht vor dem sortieren ab. Sind die Listen nicht schon zufälligerweise sortiert, so werden diese mit \code{merge\_sort} sortiert. Hier ruft sich \code{merge\_sort} rekursiv auf und teilt die Liste dabei in eine linke und rechte Subliste bis schließlich einzelne Elemente erreicht werden, welche zurückgegeben werden. \code{merge\_} garantiert nun die richtige Sortierung dieser. Die linke und rechte Liste werden dabei verglichen, wobei das Element mit dem größeren weight immer zuerst gestellt wird. Das einfügen eines Tupels mit einer leeren Phrase und einem weight von 0 garantiert, dass nachdem eine der beiden Listen durchlaufen ist, immer ein Element aus der noch nicht vollständig durchlaufenen Liste zur Ausgabe hinzugefügt wird. Für den Fall, dass die Elemente in der linken und rechten Liste gleiches weight besitzten wird das linke bevorzugt, wodurch die ursprüngliche Reihenfolge inerhalb der Reviews (für gleichen count/weight) erhalten bleiben. 
 
 
 \clearpage
-% Literaturverzeichnis
-\printbibliography
+% % Literaturverzeichnis
+% \printbibliography
 
-% Abbildungsverzeichnis
-\listoffigures
+% % Abbildungsverzeichnis
+% \listoffigures
 
-% Tabellenverzeichnis
-\listoftables
+% % Tabellenverzeichnis
+% \listoftables
 
 \end{document}
