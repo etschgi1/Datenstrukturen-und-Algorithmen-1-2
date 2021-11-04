@@ -90,15 +90,8 @@ def count_vectorizer(texts, k=1):
     for text in texts:
         counter, len_ = 0, len(text)
         while counter <= (len_-k):  # info to avoid running index over array bound
-            word = ""
-            for i in range(k):
-                # should be better than slicing in python
-                word += text[counter+i]+" "
-            # remove trailing whitespace more efficient than if query in for loop should be O(1) according to tests
-            word = word.rstrip()
-            # word = " ".join(text[counter:(counter+k)]) if k != 1 else text[counter:(counter+k)][0] #!slicing maybe not that efficient
-            # avoid duplicates
-            # y.append(word) #info array only solution
+            word = " ".join(text[counter:(counter+k)]
+                            ) if k != 1 else text[counter]
             try:
                 vals[word] += 1
             except KeyError:
