@@ -1,0 +1,202 @@
+% class
+\documentclass[ngerman]{scrartcl}
+
+
+% text input and font
+\usepackage[utf8]{inputenc}  % input in UTF-8
+\usepackage[T1]{fontenc}  % output in T1 fonts (west European encoding)
+\usepackage{lmodern}  % Latin modern font
+\usepackage{babel}  % language package
+\usepackage{amsmath, amssymb, amstext, mathtools}  % math packages (American Math Society) + correction of amsmath (mathtools) [loads amsmath automatically]
+\usepackage{physics}  % macros for easier typesetting of physical formulas
+\usepackage{letltxmacro}  % \let command for robust macros (new sqrt)
+
+
+% page geometry
+\usepackage{scrlayer-scrpage}  % page formatting with KOMA options
+\usepackage[paper=a4paper, hmargin=3cm, vmargin=2.5cm, includehead, includefoot]{geometry}
+
+
+% floats
+\usepackage[hypcap=false, labelfont=bf]{caption, subcaption}  % caption editing - hypcap warning with hyperref
+\usepackage{float}  % for [H] (forced here) specifier
+\usepackage{tabularray}
+\usepackage{diagbox}  % table cells with diagonal lines
+
+
+% graphical input
+\usepackage{graphicx}  % input JPEG, PNG, PDF, etc.
+\usepackage{pdfpages}  % input PDF as whole pages
+\usepackage{lastpage}  % reference to last page
+
+
+% text
+\usepackage[locale=DE, uncertainty-mode=separate]{siunitx}  % SI units, German formatting - \pm stays \pm instead of ..(.)
+\usepackage{icomma}  % no space after commas instead of English points) in decimal values
+\usepackage{enumitem}  % better enumerating with style options
+\usepackage{nicefrac}  % inline-fractions in n/d-style
+\usepackage{fancyvrb}  % Verbatim environment with better options (capital V!)
+
+% literacy
+\usepackage[style=apa]{biblatex}  % backend=Biber is standard
+\usepackage{csquotes}  % better quotation - should also be used in combination with package babel (warning)
+\usepackage{xurl}  % breaks links - after BibLaTeX, but before hyperref!
+\usepackage[hidelinks]{hyperref}  % produces most errors, last to load
+
+
+% KOMA setups
+% header and footer
+\pagestyle{scrheadings}  % KOMA style
+\clearpairofpagestyles  % reset
+\setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
+\setlength{\headheight}{27.2pt}  % just look at the warning
+\ihead{DA I - Halden}  % inner (left) head
+\chead{\textsc{Wachmann} Elias (12004232)}  % center head
+\ohead{\today}  % outer (right) head
+\cfoot{\pagemark{} / \pageref*{LastPage}}  % center foot - *: ref but no hyperlink
+% {}: empty statement
+% \ : protected space
+% \,: small space
+\DeclareTOCStyleEntry{dottedtocline}{section}  % sections in TableOfContents with dotted lines
+\KOMAoptions{parskip=half-}  % paragraphs with half a line height space instead of indentation, last line with no special treatment
+
+
+% package setups
+
+% BibLaTeX source
+% \addbibresource{halbleiterdiode.bib}
+
+
+% rewrite names (babel overwrites German with standard English names, therefore at document beginn [after everything is loaded])
+\AtBeginDocument{\renewcommand{\refname}{Literaturverzeichnis}}
+% others:
+% \contentsname
+% \listtablename
+% \listfigurename
+
+
+% new sqrt
+% https://en.wikibooks.org/wiki/LaTeX/Mathematics
+\makeatletter
+\let\oldr@@t\r@@t
+\def\r@@t#1#2{%
+\setbox0=\hbox{$\oldr@@t#1{#2\,}$}\dimen0=\ht0
+\advance\dimen0-0.2\ht0
+\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+{\box0\lower0.4pt\box2}}
+\LetLtxMacro{\oldsqrt}{\sqrt}
+\renewcommand*{\sqrt}[2][\ ]{\oldsqrt[#1]{#2} }
+\makeatother
+
+ 
+% tabularray
+% imports_and_setups{
+%     expl3,
+%     xparse,
+%     ninecolors
+%     \hypersetup{pdfborder={0 0 0}}
+% }
+\input{../../tabularray-environments.tex}
+
+\usepackage{pythonhighlight}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+% individual settings
+%\addbibresource{beschreibung.bib}  % database import with absolute path - file ending!
+\newcommand{\code}{\texttt}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace{1cm}
+        \Huge
+        \textbf{Data Structures and Algorithms I}
+        \vspace{5mm}
+
+        \Large
+        Homework Assignment 4 - Halden
+        \vspace{5mm}
+
+
+        \textbf{Wachmann Elias}
+
+
+        \today
+    \end{center}
+\end{titlepage}
+
+\section{Aufgabenstellung}
+\label{sec:aufgabenstellung}
+A \emph{d}-ary heap is like a binary heap, but nonleaf nodes have \emph{d} children instead of 2 children.
+\begin{enumerate}[label=(\Alph*)]
+    \item How would you represent a \emph{d}-ary heap in a array?
+    \item What is the height of a \emph{d}-ary heap of $n$ elements in terms of $n$ and $d$? Justify your answer.
+    \item Give an efficient implementation of \code{HEAPIFY} in a \emph{d}-ary max-heap. Analyze its running time in terms of $d$ and $n$.
+\end{enumerate}
+
+\section{A - Darstellung in einem Array}
+\label{sec:darstellung}
+
+Gleich wie bei einer binären Halde wird der Maximale wert an den Anfang des Arrays (im folgendem \code{A}), also \code{A[0]} gespeichert. In einer \emph{d}-äre Halde hat nun jeder Knoten (außer leafs) $d$ Kinder. Diese $d$ Kinder werden nun an die nächsten $d$ Stellen im eindimensionalen Array gespeichert. Damit sind die Kinder der Wurzel \code{A[0]} im Array an den Stellen \code{A[1]} bis \code{A[d]}. Die Nächste Ebene im Baum hat $d\cdot d$ Kinder, welche im Array von \code{A[d+1]} bis \code{A[$\code{d}^2$+d]}. Abermals die nächste von \code{A[$\code{d}^2$+d+1]} bis \code{A[$\code{d}^3$+$\code{d}^2$+d]} Allgemein liegt die $n$-te Ebene (Wurzel ist 0. Ebene) von \code{A[$\sum_{i = 0}^{n}$d$^i$]} bis \code{A[($\sum_{i = 0}^{n+1}$d$^i$)-1]} im 0-indiziertem Array.
+
+\section{B - Höhe einer \emph{d}-ären Halde}
+\label{sec:hoehe}
+Wie schon in \autoref{sec:darstellung} ersichtlich ist, wächst eine \emph{d}-ären Halde um $h^d$ - Kinder wobei $h$ die Ebene/Höhe angibt. Die Anzahl $n$ der in einer Halde gespeicherten Elemente liegt nun sicherlich wie folgt:
+\begin{align*}
+    1+\sum_{i = 0}^{h-1} d^i &\leq n \leq \sum_{i = 0}^{h} d^i\\
+    1+\frac{d^h-1}{d-1} &\leq n \leq \frac{d^{h+1}-1}{d-1}
+\end{align*}
+Nimmt man nun davon $\log_d$ und formt beide Seiten jeweils auf $h$ um erhält man:
+\begin{align*}
+    \log_d(n(d-1)+1)-1 &\leq h \leq \log_d((n-1)(d-1)+1)\\
+    \log_d(n(d-1)+1) &\leq h+1 \rightarrow \lfloor \log_d(n(d-1)+1) \rfloor  = h \rightarrow h = \Omega(\log_d(n))\\
+    \log_d((n-1)(d-1)+1) &\geq h \rightarrow \lceil \log_d((n-1)(d-1)+1) \rceil = h \rightarrow h = \mathcal{O}(\log_d(n))
+\end{align*}
+Daraus folgt nun schließlich, dass die Höhe sich zu
+\begin{align*}
+    h = \Theta(\log_d(n))
+\end{align*}
+ergibt.
+% Da $1+\sum_{i = 0}^{h-1} d^i$ trivialerweise größer als $\sum_{i = 0}^{h-1} d^i$ ist, muss somit auch $h-1 < \log_d(n(d-1)+1)-1 < h$ gelten. Daraus folgt schließlich, dass die Höhe durch den folgenden Ausdruck gegeben ist:
+% \begin{align*}
+%     h = \lceil \log_d(n(d-1)+1)\rceil - 1 = \lceil \log_d(nd-n+1)\rceil - 1 \\ 
+% \end{align*}
+\section{C - Implementation von \code{HEAPIFY}}
+\label{sec:implementation}
+Es folgt eine Implementation von \code{HEAPIFY}.
+\begin{algorithm}[H]
+    \label{alg:heapify}
+    \caption{\code{HEAPIFY}}
+    \begin{algorithmic}[1]
+        \Function{heapify}{A,i,d}
+            \State{// Input: \code{A} array to heapify}
+            \State{//        \code{i} index which should be heapified}
+            \State{//        \code{d} order of \emph{d}-ary heap}
+            \State{\code{n} $\gets$ length of \code{A}}
+            \State{\code{kids} $\gets$ [ ]}
+            \Comment{Setup empty array for kid indices}
+            \For{\code{count} $\gets$ \code{1} to \code{d}}
+            \Comment{including d}
+            \State{\code{kids[count-1] $\gets$ d*i+count}}
+            \EndFor
+            \State{\code{index} $\gets$ i}
+            \For{\code{count} $\gets$ \code{0} to \code{(}length of \code{kids)-1}}
+            \If{\code{kid} < \code{n} and \code{A[kids[count]]} > \code{A[index]}}
+            \State{\code{index} $\gets$ \code{k}}
+            \EndIf
+            \EndFor
+            \If{\code{i} does not equal \code{index}}
+            \State{switch \code{A[index]} and \code{A[i]}}
+            \State{\code{HEAPIFY(A,index,d)}}
+            \EndIf
+        \EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Laufzeitanalyse von \code{HEAPIFY}}
+\label{subsec:laufzeit}
+Bla Bla Bla
+\clearpage
+\end{document}
