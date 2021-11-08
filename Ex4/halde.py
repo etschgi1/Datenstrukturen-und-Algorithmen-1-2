@@ -31,9 +31,9 @@ def binary_HEAPIFY(array, i):
 
 def HEAPIFY(arr, i, d):
     n = len(arr)
-    kids = [d*i+j for j in range(1, d+1)]
     index = i
-    for k in kids:
+    for j in range(1,d+1):
+        k=d*i+j
         if k < n and arr[k] > arr[index]:
             index = k
     if i != index:

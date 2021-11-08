@@ -1,5 +1,5 @@
 [0] Config.pm:311> INFO - This is Biber 2.16
 [1] Config.pm:314> INFO - Logfile is 'writeup.blg'
-[445] biber-MSWIN32:340> INFO - === 
-[630] Biber.pm:415> INFO - Reading 'writeup.bcf'
-[1191] Utils.pm:395> WARN - No data sources defined!
+[860] biber-MSWIN32:340> INFO - === 
+[1090] Biber.pm:415> INFO - Reading 'writeup.bcf'
+[1547] Utils.pm:395> WARN - No data sources defined!

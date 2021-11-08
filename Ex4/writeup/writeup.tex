@@ -42,8 +42,34 @@
 \usepackage{csquotes}  % better quotation - should also be used in combination with package babel (warning)
 \usepackage{xurl}  % breaks links - after BibLaTeX, but before hyperref!
 \usepackage[hidelinks]{hyperref}  % produces most errors, last to load
-
-
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{codeblue}{rgb}{0,0,0.9}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    % identifierstyle=\color{codeblue},
+    frame=single,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
 % KOMA setups
 % header and footer
 \pagestyle{scrheadings}  % KOMA style
@@ -148,17 +174,20 @@ Wie schon in \autoref{sec:darstellung} ersichtlich ist, wächst eine \emph{d}-ä
     1+\sum_{i = 0}^{h-1} d^i &\leq n \leq \sum_{i = 0}^{h} d^i\\
     1+\frac{d^h-1}{d-1} &\leq n \leq \frac{d^{h+1}-1}{d-1}
 \end{align*}
+Die linke Seite $\frac{d^h+d-2}{d-1}$ wird wie folgt abgeschätzt:
+\begin{align*}
+    \frac{d^h+d-2}{d-1}>\frac{d^h+d-2}{d-1}-1 = \frac{d^h-1}{d-1}
+\end{align*}
 Nimmt man nun davon $\log_d$ und formt beide Seiten jeweils auf $h$ um erhält man:
 \begin{align*}
-    \log_d(n(d-1)+1)-1 &\leq h \leq \log_d((n-1)(d-1)+1)\\
-    \log_d(n(d-1)+1) &\leq h+1 \rightarrow \lfloor \log_d(n(d-1)+1) \rfloor  = h \rightarrow h = \Omega(\log_d(n))\\
-    \log_d((n-1)(d-1)+1) &\geq h \rightarrow \lceil \log_d((n-1)(d-1)+1) \rceil = h \rightarrow h = \mathcal{O}(\log_d(n))
+    &\log_d(dn-n+1)-1 \leq h < \log_d(dn-n+1)\\
+    &\Longrightarrow \lceil \log_d(dn-n+1)-1 \rceil = h
 \end{align*}
-Daraus folgt nun schließlich, dass die Höhe sich zu
+Daraus folgt nun schließlich, dass die von der Ordnung
 \begin{align*}
-    h = \Theta(\log_d(n))
+    h = \Omega(\log_d(dn)) = \Omega(\log_d(n))
 \end{align*}
-ergibt.
+ist. $d$ ist für eine \emph{d}-ären Halde konstant und kann in der $\mathcal{O}$-Notation deshalb weggelassen werden.
 % Da $1+\sum_{i = 0}^{h-1} d^i$ trivialerweise größer als $\sum_{i = 0}^{h-1} d^i$ ist, muss somit auch $h-1 < \log_d(n(d-1)+1)-1 < h$ gelten. Daraus folgt schließlich, dass die Höhe durch den folgenden Ausdruck gegeben ist:
 % \begin{align*}
 %     h = \lceil \log_d(n(d-1)+1)\rceil - 1 = \lceil \log_d(nd-n+1)\rceil - 1 \\ 
@@ -175,15 +204,16 @@ Es folgt eine Implementation von \code{HEAPIFY}.
             \State{//        \code{i} index which should be heapified}
             \State{//        \code{d} order of \emph{d}-ary heap}
             \State{\code{n} $\gets$ length of \code{A}}
-            \State{\code{kids} $\gets$ [ ]}
-            \Comment{Setup empty array for kid indices}
-            \For{\code{count} $\gets$ \code{1} to \code{d}}
-            \Comment{including d}
-            \State{\code{kids[count-1] $\gets$ d*i+count}}
-            \EndFor
+            % \State{\code{kids} $\gets$ [ ]}
+            % \Comment{Setup empty array for kid indices}
+            % \For{\code{count} $\gets$ \code{1} to \code{d}}
+            % \State{\code{kids[count-1] $\gets$ d*i+count}}
+            % \EndFor
             \State{\code{index} $\gets$ i}
-            \For{\code{count} $\gets$ \code{0} to \code{(}length of \code{kids)-1}}
-            \If{\code{kid} < \code{n} and \code{A[kids[count]]} > \code{A[index]}}
+            \For{\code{count} $\gets$ \code{1} to \code{d+1}}
+            \Comment{including d+1}
+            \State{\code{kid}  $\gets$ \code{d*i+count}}
+            \If{\code{kid} < \code{n} and \code{A[kid]]} > \code{A[index]}}
             \State{\code{index} $\gets$ \code{k}}
             \EndIf
             \EndFor
@@ -197,6 +227,15 @@ Es folgt eine Implementation von \code{HEAPIFY}.
 
 \subsection{Laufzeitanalyse von \code{HEAPIFY}}
 \label{subsec:laufzeit}
-Bla Bla Bla
+Die Laufzeit von \code{HEAPIFY} ergibt sich nun wie folgt:
+Die For-Schleife im Algorithmus wird beim Aufruf $d$ mal ausgeführt, somit $\mathcal{O}(d)$ . Innerhalb der For-Schleife erfolgen die Zuweisungen und vergleiche in $\mathcal{O}(1)$ Zeit. Auch die Zuweisungen vor und der Vergleich sowie der \enquote{switch} nach der Schleife erfolgen in konstanter Zeit. Der rekursive Funktionsaufruf wird maximal so oft aufgerufen, wie die Halde tief ist, also $\mathcal{O}(log_d(n))$.
+Dadurch ergibt sich insgesamt:
+\begin{align*}
+    T(d,n) = \mathcal{O}(d*log_d(n))
+\end{align*}
+\newpage
+\section{\textbf{Bonus} - Laufzeit Plot}
+Der Algorithmus wurde wie folgt in Python implementiert:
+\lstinputlisting[language=Python]{heapify.py}
 \clearpage
 \end{document}
