@@ -1,0 +1,196 @@
+% class
+\documentclass[english]{scrartcl}
+
+
+% text input and font
+\usepackage[utf8]{inputenc}  % input in UTF-8
+\usepackage[T1]{fontenc}  % output in T1 fonts (west European encoding)
+\usepackage{lmodern}  % Latin modern font
+\usepackage{babel}  % language package
+\usepackage{amsmath, amssymb, amstext, mathtools}  % math packages (American Math Society) + correction of amsmath (mathtools) [loads amsmath automatically]
+\usepackage{physics}  % macros for easier typesetting of physical formulas
+\usepackage{letltxmacro}  % \let command for robust macros (new sqrt)
+
+
+% page geometry
+\usepackage{scrlayer-scrpage}  % page formatting with KOMA options
+\usepackage[paper=a4paper, hmargin=3cm, vmargin=2.5cm, includehead, includefoot]{geometry}
+
+
+% floats
+\usepackage[hypcap=false, labelfont=bf]{caption, subcaption}  % caption editing - hypcap warning with hyperref
+\usepackage{float}  % for [H] (forced here) specifier
+\usepackage{tabularray}
+\usepackage{diagbox}  % table cells with diagonal lines
+
+
+% graphical input
+\usepackage{graphicx}  % input JPEG, PNG, PDF, etc.
+\usepackage{pdfpages}  % input PDF as whole pages
+\usepackage{lastpage}  % reference to last page
+
+
+% text
+\usepackage[locale=DE, uncertainty-mode=separate]{siunitx}  % SI units, German formatting - \pm stays \pm instead of ..(.)
+\usepackage{icomma}  % no space after commas instead of English points) in decimal values
+\usepackage{enumitem}  % better enumerating with style options
+\usepackage{nicefrac}  % inline-fractions in n/d-style
+\usepackage{fancyvrb}  % Verbatim environment with better options (capital V!)
+
+% literacy
+\usepackage[style=apa]{biblatex}  % backend=Biber is standard
+\usepackage{csquotes}  % better quotation - should also be used in combination with package babel (warning)
+\usepackage{xurl}  % breaks links - after BibLaTeX, but before hyperref!
+\usepackage[hidelinks]{hyperref}  % produces most errors, last to load
+
+
+% KOMA setups
+% header and footer
+\pagestyle{scrheadings}  % KOMA style
+\clearpairofpagestyles  % reset
+\setkomafont{pageheadfoot}{\normalfont}  % standard font in header and footer
+\setlength{\headheight}{27.2pt}  % just look at the warning
+\ihead{DA II\\Assignment 4}  % inner (left) head
+\chead{\textsc{Wachmann} Elias (12004232)}  % center head
+\ohead{\today}  % outer (right) head
+\cfoot{\pagemark{} / \pageref*{LastPage}}  % center foot - *: ref but no hyperlink
+% {}: empty statement
+% \ : protected space
+% \,: small space
+\DeclareTOCStyleEntry{dottedtocline}{section}  % sections in TableOfContents with dotted lines
+\KOMAoptions{parskip=half-}  % paragraphs with half a line height space instead of indentation, last line with no special treatment
+
+
+% package setups
+
+% BibLaTeX source
+% \addbibresource{halbleiterdiode.bib}
+
+
+% rewrite names (babel overwrites German with standard English names, therefore at document beginn [after everything is loaded])
+% \AtBeginDocument{\renewcommand{\refname}{Literaturverzeichnis}}
+% others:
+% \contentsname
+% \listtablename
+% \listfigurename
+
+
+% new sqrt
+% https://en.wikibooks.org/wiki/LaTeX/Mathematics
+\makeatletter
+\let\oldr@@t\r@@t
+\def\r@@t#1#2{%
+\setbox0=\hbox{$\oldr@@t#1{#2\,}$}\dimen0=\ht0
+\advance\dimen0-0.2\ht0
+\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+{\box0\lower0.4pt\box2}}
+\LetLtxMacro{\oldsqrt}{\sqrt}
+\renewcommand*{\sqrt}[2][\ ]{\oldsqrt[#1]{#2} }
+\makeatother
+
+ 
+% tabularray
+% imports_and_setups{
+%     expl3,
+%     xparse,
+%     ninecolors
+%     \hypersetup{pdfborder={0 0 0}}
+% }
+\input{../tabularray-environments.tex}
+
+\usepackage{pythonhighlight}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+% individual settings
+%\addbibresource{beschreibung.bib}  % database import with absolute path - file ending!
+\newcommand{\code}{\texttt}
+
+
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+        \vspace{1cm}
+        \Huge
+        \textbf{Data Structures and Algorithms II}
+        \vspace{5mm}
+
+        \Large
+        Assignment 4
+        \vspace{5mm}
+
+
+        \textbf{Wachmann Elias}
+
+
+        \today
+    \end{center}
+\end{titlepage}
+
+\clearpage
+% \tableofcontents
+\newpage
+
+\section{Task Description}
+\label{sec:problem}
+\textbf{Triangulation 3-coloring} 
+\newline
+Your are given a triangulation of a point set. Your task is to design an efficient algorithm that constructs a valid 3-coloring of the points of the triangulation or determines that such a 3-coloring does not exist. A 3-coloring of the points is valid if any two points that are connected with an edge have different colors.
+The n points of the triangulation are labeled with the integers $\{1, \dots, n\}$. The triangulation is given by a list of edges with additional triangle points (see Figure 1 for an example):
+\begin{itemize}
+    \item Every edge is given by the labels of its two end points (first the smaller point label, then the larger one).
+    \item For every edge, the labels of the point(s) with which the edge forms a triangle (a bounded triangular face) in the triangulation is given (two labels for interior edges and one label for edges on the boundary of the convex hull).
+\end{itemize}
+\begin{figure}[H]
+    \centering
+    \includegraphics{img/plain.pdf}
+    \caption{Example of a triangulation and a list of its edges with triangle points.}
+\end{figure}
+Explain and describe your algorithm in detail, analyze its runtime and memory requirements, and give reasons for the correctness of your solution.
+
+\section{Description of algorithm}
+\label{sec:runtime}
+It is assumed from the example, that the edges are always given with the lower vertex number in the first place e.g. 1-5 instead of 5-1. If this is not a given, the edge representation could be changed to conform to the above constraint in linear time, thus not increasing the asymptotic runtime. 
+\\
+\textbf{Description}
+\\
+\begin{enumerate}
+    \item Setup: First get number of Points, which is the maximum in triangle points. Use this number to create an array with this size for the colors of the vertices. Store edges (keys) and triangle points (values) in a hashmap for fast access. Setup counter which tracks how many edges need to be checked. Setup empty stack.
+    \item Start: Choose arbitrary start edge as current edge: e.g. first edge in list and color it with $c_1$ and $c_2$. 
+    \item Loop: Check if triangle vertex of current edge is colored. If so, check if color is not one of the current edge colors, if this also applies --> stop no coloring exists. Else color triangle vertex with color which is not in current edge. \\ Choose next Edge as follows: Pop Edge from stack if stack is not empty. Otherwise choose an edge from the most recent colored triangle vertices to one of the current points, such that 
+\end{enumerate}
+
+Jede Edge abchecken, damit man kein Dreieck übersieht. 
+
+1) Wähle beliebigen Startpunkt -> Färbe initial erste Edge
+Loop:\\
+2) checke triangle points von current edge -> färbe falls keine farbe
+    -) wenn triangle points farben falsch --> ABBRUCH\\
+3) Auswahlregel für nächste Edge: Aus dem Stack nehmen wenn Stack nicht leer. Sonst Minimalste Edge nehmen z.B.: 2-4   3 (2-3) wählen restliche Edges in einen Stack falls mehrere möglich sind
+(Somit kann gewährleistet werden, dass jede Edge angeschaut wird und somit kein Dreieck übersehen wird.)
+
+
+
+
+
+
+\section{Korrektheit des Algorithmus}
+\label{sec:correctness}
+\textbf{TODO}
+
+
+
+
+\clearpage
+% % Literaturverzeichnis
+% \printbibliography
+
+% % Abbildungsverzeichnis
+% \listoffigures
+
+% % Tabellenverzeichnis
+% \listoftables
+
+\end{document}
