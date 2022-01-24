@@ -1410,16 +1410,15 @@ INPUT c:/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT c:/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT c:/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmbx9.tfm
 INPUT c:/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmtt9.tfm
-INPUT c:/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmr17.tfm
 INPUT Beschreibung.aux
 INPUT ./Beschreibung.out
 INPUT ./Beschreibung.out
 INPUT Beschreibung.run.xml
 OUTPUT Beschreibung.run.xml
-INPUT c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc
 INPUT c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc
+INPUT c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 INPUT c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx10.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx12.pfb
@@ -1429,7 +1428,6 @@ INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi10.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi9.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr10.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr12.pfb
-INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr17.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr6.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr8.pfb
 INPUT c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr9.pfb

@@ -205,10 +205,9 @@ All together the time complexity of the algorithm is $\mathcal{O}(n)$.
 
 \section{Correctness of the algorithm}
 \label{sec:correctness}
-\begin{huge}
-    The proof of correctness is left to the tutor!
-\end{huge}
-
+To guarantee a correct 3-coloring of the graph the algorithm must not get trapped in a coloring schema which will not yield a valid 3-coloring, even though one exists for a given graph. This is achieved by choosing the correct edges (only neighbors of the initial edge as \code{cur\_edge}) after the initial edge \footnote{A detailed definition of neighboring edges is given in \autoref{sec:description} } \\After coloring an initial edge and it's triangle points, which is trivially correct\footnote{Simply choose 2 different colors for the vertices in edge and the remaining for the triangle point(s)}, neighboring edges are colored. However, all neighboring edges consist of one triangle point  and one vertex from the initial edge which are already colored, making the coloring of the remaining point also trivial. Now the correctness is easy to show:\\ The initial edge and it's triangle point are colored correctly and so all remaining uncolored points in the neighboring edges can be colored correctly. In this way the algorithm can't end up in a dead end, because every edge has at least 2 and at most 4 neighboring edges. These edges are all added to the queue \code{NEXTEDGES}, which intern guarantees that the algorithms colors from the initial edges \enquote*{outwards} (first it's neighbors, then their neighbors and so on). In this order every edge will be put into \code{NEXTEDGES} and thus in the worst case every edge will be \code{cur\_edge} before all points are colored. \\
+\underline{Note on the case that not valid 3-coloring exists:} For the case that no valid 3-coloring is possible like in the given example in \autoref{fig:fig1} the algorithm (e.g. starting from edge 1-3) will color 2 and 4 with the same color, however the algorithm will immediately notice this when trying to color one of the neighboring edges. For the special case, that there are no edges left, like in the given example in \autoref{fig:fig1} \textbf{without vertex 5} (also starting from edge 1-3), all vertices would be colored and 2 and 4 again in the same color. This discrepancy is then spotted in the fourth step of the algorithm which checks all edges which were not previously the \code{cur\_edge}. Then the algorithm would terminate and report that no valid coloring exists if either the edge 2-3, 3-4 (neighbors of 1-3) or the edge 2-4 is checked.
+ 
 
 
 

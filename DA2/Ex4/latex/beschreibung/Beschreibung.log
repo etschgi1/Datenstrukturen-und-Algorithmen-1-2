@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.12.23)  24 JAN 2022 01:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2021/W32TeX) (preloaded format=pdflatex 2021.12.23)  24 JAN 2022 14:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1246,17 +1246,17 @@ Package logreq Info: Writing requests to 'Beschreibung.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
  36257 strings out of 478353
- 729270 string characters out of 5852100
- 1669274 words of memory out of 5000000
- 53907 multiletter control sequences out of 15000+600000
- 469855 words of font info for 73 fonts, out of 8000000 for 9000
+ 729269 string characters out of 5852100
+ 1670274 words of memory out of 5000000
+ 53905 multiletter control sequences out of 15000+600000
+ 466840 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  108i,20n,106p,10654b,4825s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on Beschreibung.pdf (6 pages, 394438 bytes).
+{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/texlive/2021/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmbx9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmmi9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy9.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/texlive/2021/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
+Output written on Beschreibung.pdf (6 pages, 378678 bytes).
 PDF statistics:
- 214 PDF objects out of 1000 (max. 8388607)
- 153 compressed objects within 2 object streams
- 26 named destinations out of 1000 (max. 500000)
+ 216 PDF objects out of 1000 (max. 8388607)
+ 157 compressed objects within 2 object streams
+ 28 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

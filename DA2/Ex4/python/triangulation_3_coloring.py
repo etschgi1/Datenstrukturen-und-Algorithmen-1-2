@@ -97,6 +97,6 @@ def color(Edge_list):
     print(f"Done Coloring: {[(i+1,RBG[c]) for i,c in enumerate(COLORS)]}")
 
 
-# color(EDGES)
-color(FAULTYEDGES)
+color(EDGES)
+# color(FAULTYEDGES)
 # color(FAULTYEDGESM)
