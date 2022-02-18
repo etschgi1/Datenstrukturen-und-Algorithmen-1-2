@@ -68,7 +68,6 @@ def color(Edge_list):
         Edge_list[c] = (t[0],back) 
         max_ = max(back) if max(back)>max_ else max_
     COLORS = [0]*max_
-    print(max_)
     counter = max_ #remaining
     # COLORS = [0]*max_
     first_edge = Edge_list.pop(0)
@@ -98,5 +97,5 @@ def color(Edge_list):
 
 
 color(EDGES)
-# color(FAULTYEDGES)
+#color(FAULTYEDGES)
 # color(FAULTYEDGESM)
